@@ -1,0 +1,8 @@
+# Copyright 2022  Projektpraktikum Python.
+# SPDX-License-Identifier: Apache-2.0
+""" Keyword tests."""
+
+
+def test_keyword_time() -> None:
+    """Test add operator calculates correctly."""
+    assert keywordfind("sag mir bitte die uhrzeit") == "uhrzeit"
