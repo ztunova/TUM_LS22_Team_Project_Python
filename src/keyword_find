@@ -1,0 +1,72 @@
+# Copyright 2022  Projektpraktikum Python.
+# SPDX-License-Identifier: Apache-2.0
+"""Keyword_Finder."""
+
+import string
+
+#import timer       wir müssen uns überlegen, ob wir eine externe liste importieren wollen
+#import date        , um die Keyword zuzuordnen oder ob wir die Keywords hart eincodieren
+#import weatherreport
+#import volume
+
+qualifier = 0   # Tells the keyword function, if:
+                # 0 = the function call failed
+                # 1 = the function call was successfull
+                # 2 = the function call was successfull AND the function expexts further input from the user
+
+function_number = 0 # With this number the last function called is remeberd
+
+def keyword_find(voiceinput: str) -> str:
+    """Uses Keywords to find the right function to call
+
+    Args:
+        string: Userinput interpreted as a string
+
+    Returns:
+        string: Voiceoutput for user as a string
+
+    Raises:
+        -
+
+    Note:
+        Intern this function excpects the called function to return a qualifier, which determins
+        if the function expects futher input from
+
+    """
+    if qualifier == 2:          #skips the keyword mapping and immediatly calls the last fucntion called if qualifier == 2
+        match function_number:
+            case 1:
+                output = time_and_date(input)
+            case 2:
+                output = volume(input)
+            case 3:
+                output = timer_reminder(input)
+            case 4:
+                output = weatherreport(input)
+
+    function1_list = ['Uhrzeit','Datum','spaet']        #Keywords for function 1 (Time and Date)
+    function2_list = ['Lautstaerke','leiser','lauter']  #Keywords for function 2 (Volume up/down)
+    function3_list = ['Timer','Erinnerung']             #Keywords for function 3 (Timer/Reminder)
+    function4_list = ['Wetter','Vorhersage']            #Keywords for function 4 (Weatherreport)
+
+    keylist = [function1_list, function2_list, function3_list, function4_list]  #Mappping list for functions
+
+
+    for liste in keylist:                                #Looks if any of the input words mach the keyword list
+        for element in liste:
+            if element in voiceinput:
+                function_number = keylist.index(liste) + 1  #The value of this integer shows which function will be called; 0 = default no function found
+
+    match function_number:
+        case 0:
+            output = 'Leider kann ich mit diesen Befehl nichts anfangen'
+        case 1:
+            output = time_and_date(input)
+        case 2:
+            output = volume(input)
+        case 3:
+            output = timer_reminder(input)
+        case 4:
+            output = weatherreport(input)
+
+    return output
