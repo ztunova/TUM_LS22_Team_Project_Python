@@ -4,6 +4,7 @@
 
 Source: https://stt.readthedocs.io/en/latest/Python-Examples.html
 """
+
 from __future__ import absolute_import, division, print_function
 
 import argparse
@@ -23,7 +24,8 @@ except ImportError:
     from pipes import quote
 
 
-def convert_samplerate(audio_path, desired_sample_rate):
+def convert_samplerate(audio_path: str, desired_sample_rate: type) -> type:
+    """Convert sample audio to desired sample rate."""
     sox_cmd = f'sox {quote(audio_path)} --type raw --bits 16 --channels 1\
          --rate {desired_sample_rate} --encoding signed-integer --endian little\
              --compression 0.0 --no-dither - '
@@ -40,11 +42,13 @@ def convert_samplerate(audio_path, desired_sample_rate):
     return desired_sample_rate, np.frombuffer(output, np.int16)
 
 
-def metadata_to_string(metadata):
+def metadata_to_string(metadata: type) -> str:
+    """Return string of metadata."""
     return ''.join(token.text for token in metadata.tokens)
 
 
-def words_from_candidate_transcript(metadata):
+def words_from_candidate_transcript(metadata: type) -> type:
+    """Create list of words from transcript."""
     word = ''
     word_list = []
     word_start_time = 0
@@ -64,10 +68,13 @@ def words_from_candidate_transcript(metadata):
             if word_duration < 0:
                 word_duration = 0
 
-            each_word = dict()
-            each_word['word'] = word
-            each_word['start_time'] = round(word_start_time, 4)
-            each_word['duration'] = round(word_duration, 4)
+            each_word = {
+                'word': word,
+                'start_time': round(word_start_time, 4),
+                'duration': round(word_duration, 4)}
+            # each_word['word'] = word
+            # each_word['start_time'] = round(word_start_time, 4)
+            # each_word['duration'] = round(word_duration, 4)
 
             word_list.append(each_word)
             # Reset
@@ -77,23 +84,36 @@ def words_from_candidate_transcript(metadata):
     return word_list
 
 
-def metadata_json_output(metadata):
-    json_result = dict()
-    json_result['transcripts'] = [
-        {
-            'confidence': transcript.confidence,
-            'words': words_from_candidate_transcript(transcript),
-        }
-        for transcript in metadata.transcripts
-    ]
+def metadata_json_output(metadata: type) -> type:
+    """Output metadata as json."""
+    json_result = {
+        'transcripts': [
+            {
+                'confidence': transcript.confidence,
+                'words': words_from_candidate_transcript(transcript),
+            }
+            for transcript in metadata.transcripts
+        ],
+    }
+    # json_result['transcripts'] = [
+    #     {
+    #         'confidence': transcript.confidence,
+    #         'words': words_from_candidate_transcript(transcript),
+    #     }
+    #     for transcript in metadata.transcripts
+    # ]
     return json.dumps(json_result, indent=2)
 
 
 class VersionAction(argparse.Action):
-    def __init__(self, *args, **kwargs):
+    """Init stt and inform user."""
+
+    def __init__(self, *args: type, **kwargs: type):
+        """Init stt."""
         super(VersionAction, self).__init__(nargs=0, *args, **kwargs)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args: type, **kwargs: type):
+        """Print version."""
         print('Coqui STT ', version())
         exit(0)
 
