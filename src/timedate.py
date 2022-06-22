@@ -11,6 +11,9 @@ def main(taskinput: str) -> str:
     Args:
         taskinput: Input from keyword_find as a string
 
+    Returns:
+        Current Time or Date.
+
     """
     time_list = ['Uhrzeit', 'Uhr', 'spaet']
     date_list = ['Datum', 'Tag']
@@ -22,15 +25,14 @@ def main(taskinput: str) -> str:
             if element in taskinput:
                 function_number = keylist.index(liste) + 1
 
-    match function_number:
-        case 0:
-            output = 'Leider kann ich mit diesen Befehl nichts anfangen'
-        case 1:
-            output = time()
-        case 2:
-            output = date()
+    if function_number == 1:
+        return time()
 
-    return output
+    if function_number == 2:
+        return date()
+
+    else:
+        return'Leider kann ich mit diesen Befehl nichts anfangen'
 
 
 def time() -> str:

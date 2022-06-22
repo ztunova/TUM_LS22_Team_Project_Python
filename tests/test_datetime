@@ -3,7 +3,6 @@
 """Date and Time tests."""
 
 import datetime as dt
-from unittest.mock import patch
 
 from timedate import main
 
