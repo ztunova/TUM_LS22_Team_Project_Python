@@ -5,7 +5,7 @@
 import datetime
 
 
-def main(taskinput: str) -> str:
+def timedate(taskinput: str) -> str:
     """Use Keywords to find the right function to call.
 
     Args:
