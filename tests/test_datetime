@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 from src.datetime import timedate
 
+
 def test_date() -> None:
-    """Test date function return current date"""
-    assert timedate('Wie viel Uhr haben wir') == f'Es ist {datetime.datetime.now().strftime("%H"+ ":" + "%M")}'
+    """Test date function return current date."""
+    assert timedate('Wie viel Uhr ist es') == f'Es ist {datetime.datetime.now().strftime("%H:%M")}'
