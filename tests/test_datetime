@@ -1,0 +1,13 @@
+# Copyright 2022  Projektpraktikum Python.
+# SPDX-License-Identifier: Apache-2.0
+"""Date and Time tests."""
+
+import datetime
+
+from unittest.mock import patch
+
+from src.datetime import timedate
+
+def test_date() -> None:
+    """Test date function return current date"""
+    assert timedate('Wie viel Uhr haben wir') == f'Es ist {datetime.datetime.now().strftime("%H"+ ":" + "%M")}'
