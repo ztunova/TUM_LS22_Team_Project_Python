@@ -31,7 +31,7 @@ def timedate(taskinput: str) -> str:
     if function_number == 2:
         return date()
 
-    return'Leider kann ich mit diesen Befehl nichts anfangen'
+    return 'Leider kann ich mit diesen Befehl nichts anfangen'
 
 
 def time() -> str:
