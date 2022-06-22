@@ -5,7 +5,7 @@
 import datetime
 
 
-def timedate(taskinput: str) -> str:
+def main(taskinput: str) -> str:
     """Use Keywords to find the right function to call.
 
     Args:
@@ -14,3 +14,30 @@ def timedate(taskinput: str) -> str:
     """
     time_list = ['Uhrzeit', 'Uhr', 'spaet']
     date_list = ['Datum', 'Tag']
+    keylist = [time_list, date_list]
+
+    function_number = 0
+    for liste in keylist:
+        for element in liste:
+            if element in taskinput:
+                function_number = keylist.index(liste) + 1
+
+    match function_number:
+        case 0:
+            output = 'Leider kann ich mit diesen Befehl nichts anfangen'
+        case 1:
+            output = time()
+        case 2:
+            output = date()
+
+    return output
+
+
+def time() -> str:
+    """Time function."""
+    return f'Es ist {datetime.datetime.now().strftime("%H:%M")}'
+
+
+def date() -> str:
+    """Date function."""
+    return f'Es ist der {datetime.datetime.now().strftime("%d/%m/%Y")}'
