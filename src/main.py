@@ -10,11 +10,7 @@ import shlex
 import subprocess
 import sys
 import wave
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    # pylint: disable=all
-    from typing import Any
+from typing import Tuple  # noqa: TC002
 
 import numpy
 from stt import Model  # type: ignore
@@ -25,9 +21,9 @@ except ImportError:
     from pipes import quote
 
 
-def convert_samplerate(audio_path: str, ds_rate: str) -> tuple[str, numpy.ndarray[Any, Any]]:
+def cvt_smpl_rt(path: str, ds_rate: str) -> Tuple[str, numpy.ndarray[any, any]]:  # type: ignore
     """Convert sample audio to desired sample rate."""
-    sox_cmd = f'sox {quote(audio_path)} --type raw --bits 16 --channels 1\
+    sox_cmd = f'sox {quote(path)} --type raw --bits 16 --channels 1\
          --rate {ds_rate} --encoding signed-integer --endian little\
              --compression 0.0 --no-dither - '
 
@@ -123,7 +119,7 @@ def main() -> None:
             ),
             file=sys.stderr,
         )
-        fs_new, audio = convert_samplerate(args.audio, desired_sample_rate)
+        fs_new, audio = cvt_smpl_rt(args.audio, desired_sample_rate)
     else:
         audio = numpy.frombuffer(fin.readframes(fin.getnframes()), numpy.int16)
 
