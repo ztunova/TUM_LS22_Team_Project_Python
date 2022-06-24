@@ -1,0 +1,38 @@
+# Copyright 2022  Projektpraktikum Python.
+# SPDX-License-Identifier: Apache-2.0
+""" Keyword tests."""
+
+#import pytest
+
+from unitest.mock import patch
+
+from src.keyword_find import keyword_find
+
+def test_keyword_none() -> None:
+    """Test Output if function does not exist"""
+    assert keyword_find('Sag mir bitte wie viel Bier noch da ist') == 'Leider kann ich mit diesen Befehl nichts anfangen'
+
+def test_keyword_time() -> None:
+    """Test Time Output"""
+    with patch('time_and_date', 'Es ist 13 Uhr'):
+        assert keyword_find('Welcher Uhrzeit haben wir') == 'Es ist 13 Uhr'
+
+def test_keyword_date() -> None:
+    """Test Date Output"""
+    with patch('time_and_date', 'Es ist der 24.12.2022'):
+        assert keyword_find('Welches Datum haben wir') == 'Es ist der 24.12.2022'
+
+def test_keyword_volume_down() -> None:
+    """Test Volume down Output"""
+    with patch('volume', 'Ich habe die Lautstaerke reduziert'):
+        assert keyword_find('Mach bitte die Laustaerke leiser') == 'Ich habe die Lautstaerke reduziert'
+
+def test_keyword_timer() -> None:
+    """Test Volume down Output"""
+    with patch('timer_reminder', 'Ich habe einen Timer fuer 10 Minuten gestellt'):
+        assert keyword_find('Setze bitte einen Timer fuer 10 Minuten') == 'Ich habe einen Timer fuer 10 Minuten gestellt'
+
+def test_keyword_weatherreport() -> None:
+    """Test Weatherreport Output"""
+    with patch('weatherreport', 'Ich habe dir den Wetterbericht geoeffnet'):
+        assert keyword_find('Wie wird das Wetter morgen') == 'Ich habe dir den Wetterbericht geoeffnet'
