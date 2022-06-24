@@ -7,7 +7,7 @@ test:
   stage: test
   image: python:3.10
   script:
-    - sudo apt install sox
+    - apt install sox
     - python3.10 -m venv venv
     - venv/bin/python -m pip install -r requirements.txt
     - venv/bin/python -m pip install -e .[dev]
@@ -30,7 +30,7 @@ build:
   stage: build
   image: python:3.10
   script:
-    - sudo apt install sox
+    - apt install sox
     - python3.10 -m venv venv
     - venv/bin/python -m pip install build
     - venv/bin/python -m build .
