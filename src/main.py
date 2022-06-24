@@ -14,9 +14,10 @@ import subprocess
 import sys
 import wave
 from timeit import default_timer as timer
+from typing import Tuple, Any
 
 import numpy as np
-from stt import Model, version
+from stt import Model
 
 try:
     from shlex import quote
@@ -24,7 +25,7 @@ except ImportError:
     from pipes import quote
 
 
-def convert_samplerate(audio_path: str, desired_sample_rate: type) -> type:
+def convert_samplerate(audio_path: str, desired_sample_rate: type) -> Tuple[type, np.ndarray[Any, Any]]:
     """Convert sample audio to desired sample rate."""
     sox_cmd = f'sox {quote(audio_path)} --type raw --bits 16 --channels 1\
          --rate {desired_sample_rate} --encoding signed-integer --endian little\
@@ -41,84 +42,7 @@ def convert_samplerate(audio_path: str, desired_sample_rate: type) -> type:
 
     return desired_sample_rate, np.frombuffer(output, np.int16)
 
-
-def metadata_to_string(metadata: type) -> str:
-    """Return string of metadata."""
-    return ''.join(token.text for token in metadata.tokens)
-
-
-def words_from_candidate_transcript(metadata: type) -> type:
-    """Create list of words from transcript."""
-    word = ''
-    word_list = []
-    word_start_time = 0
-    # Loop through each character
-    for i, token in enumerate(metadata.tokens):
-        # Append character to word if it's not a space
-        if token.text != ' ':
-            if len(word) == 0:
-                # Log the start time of the new word
-                word_start_time = token.start_time
-
-            word = word + token.text
-        # Word boundary is either a space or the last character in the array
-        if token.text == ' ' or i == len(metadata.tokens) - 1:
-            word_duration = token.start_time - word_start_time
-
-            if word_duration < 0:
-                word_duration = 0
-
-            each_word = {
-                'word': word,
-                'start_time': round(word_start_time, 4),
-                'duration': round(word_duration, 4)}
-            # each_word['word'] = word
-            # each_word['start_time'] = round(word_start_time, 4)
-            # each_word['duration'] = round(word_duration, 4)
-
-            word_list.append(each_word)
-            # Reset
-            word = ''
-            word_start_time = 0
-
-    return word_list
-
-
-def metadata_json_output(metadata: type) -> type:
-    """Output metadata as json."""
-    json_result = {
-        'transcripts': [
-            {
-                'confidence': transcript.confidence,
-                'words': words_from_candidate_transcript(transcript),
-            }
-            for transcript in metadata.transcripts
-        ],
-    }
-    # json_result['transcripts'] = [
-    #     {
-    #         'confidence': transcript.confidence,
-    #         'words': words_from_candidate_transcript(transcript),
-    #     }
-    #     for transcript in metadata.transcripts
-    # ]
-    return json.dumps(json_result, indent=2)
-
-
-class VersionAction(argparse.Action):
-    """Init stt and inform user."""
-
-    def __init__(self, *args: type, **kwargs: type):
-        """Init stt."""
-        super(VersionAction, self).__init__(nargs=0, *args, **kwargs)
-
-    def __call__(self, *args: type, **kwargs: type):
-        """Print version."""
-        print('Coqui STT ', version())
-        exit(0)
-
-
-def main():
+def main() -> None:
     """Run to get text from audio file."""
     parser = argparse.ArgumentParser(description='Running Coqui STT inference.')
     parser.add_argument(
@@ -144,9 +68,6 @@ def main():
              If not specified, use default from the scorer package.',
     )
     parser.add_argument(
-        '--version', action=VersionAction, help='Print version and exits',
-    )
-    parser.add_argument(
         '--extended',
         required=False,
         action='store_true',
@@ -157,12 +78,6 @@ def main():
         required=False,
         action='store_true',
         help='Output json from metadata with timestamp of each word',
-    )
-    parser.add_argument(
-        '--candidate_transcripts',
-        type=int,
-        default=3,
-        help='Number of candidate transcripts to include in JSON output',
     )
     parser.add_argument('--hot_words', type=str, help='Hot-words and their boosts.')
     args = parser.parse_args()
@@ -214,18 +129,11 @@ def main():
     fin.close()
 
     print('Running inference.', file=sys.stderr)
+
     inference_start = timer()
-    # sphinx-doc: python_ref_inference_start
-    if args.extended:
-        print(metadata_to_string(ds.sttWithMetadata(audio, 1).transcripts[0]))
-    elif args.json:
-        print(
-            metadata_json_output(ds.sttWithMetadata(audio, args.candidate_transcripts)),
-        )
-    else:
-        print(ds.stt(audio))
-    # sphinx-doc: python_ref_inference_stop
+    print(ds.stt(audio))
     inference_end = timer() - inference_start
+
     print(
         ('Inference took %0.3fs for %0.3fs audio file.') % (inference_end, audio_length),
         file=sys.stderr,
