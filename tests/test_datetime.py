@@ -4,7 +4,7 @@
 
 import datetime as dt
 
-from timedate import timedate
+from assistant.timedate import timedate
 
 
 def test_time() -> None:
