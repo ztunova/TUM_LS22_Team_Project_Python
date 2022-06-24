@@ -30,6 +30,7 @@ def convert_samplerate(audio_path: str, ds_rate: str) -> tuple[str, numpy.ndarra
     sox_cmd = f'sox {quote(audio_path)} --type raw --bits 16 --channels 1\
          --rate {ds_rate} --encoding signed-integer --endian little\
              --compression 0.0 --no-dither - '
+
     try:
         output = subprocess.check_output(shlex.split(sox_cmd), stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as exception:
@@ -47,13 +48,19 @@ def main() -> None:
     """Run to get text from audio file."""
     parser = argparse.ArgumentParser(description='Running Coqui STT inference.')
     parser.add_argument(
-        '--model', required=True, help='Path to the model (protocol buffer binary file)',
+        '--model',
+        required=True,
+        help='Path to the model (protocol buffer binary file)',
     )
     parser.add_argument(
-        '--scorer', required=False, help='Path to the external scorer file',
+        '--scorer',
+        required=False,
+        help='Path to the external scorer file',
     )
     parser.add_argument(
-        '--audio', required=True, help='Path to the audio file to run (WAV format)',
+        '--audio',
+        required=True,
+        help='Path to the audio file to run (WAV format)',
     )
     parser.add_argument('--beam_width', type=int, help='Beam width for the CTC decoder')
     parser.add_argument(
@@ -108,10 +115,12 @@ def main() -> None:
     fs_orig = fin.getframerate()
     if fs_orig != desired_sample_rate:
         print(
-            (f'Warning: original sample rate ({fs_orig}) \
+            (
+                f'Warning: original sample rate ({fs_orig}) \
                 is different than {desired_sample_rate}hz. \
                 Resampling might produce \
-             erratic speech recognition.'),
+                erratic speech recognition.'
+            ),
             file=sys.stderr,
         )
         fs_new, audio = convert_samplerate(args.audio, desired_sample_rate)
