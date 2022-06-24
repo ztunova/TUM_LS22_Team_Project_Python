@@ -8,7 +8,7 @@ test:
   image: python:3.10
   script:
     - apt update && apt upgrade
-    - apt install sox
+    - apt -y install sox
     - python3.10 -m venv venv
     - venv/bin/python -m pip install -r requirements.txt
     - venv/bin/python -m pip install -e .[dev]
@@ -32,7 +32,7 @@ build:
   image: python:3.10
   script:
     - apt update && apt upgrade
-    - apt install sox
+    - apt -y install sox
     - python3.10 -m venv venv
     - venv/bin/python -m pip install build
     - venv/bin/python -m build .
