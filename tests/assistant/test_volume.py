@@ -2,10 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Volume tests."""
 
-from os import name
-
 from unittest.mock import patch
-from assistant.volume import volume
+
+from assistant.volume import STEP, volume
 
 
 def test_wrong_keyword() -> None:
@@ -14,31 +13,37 @@ def test_wrong_keyword() -> None:
         'Leider kann ich mit diesen Befehl nichts anfangen'
 
 
+@patch('assistant.volume.os_name', 'nt')
 def test_win_up() -> None:
     """Test Volume up for Windows."""
-    with patch()
+    assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
 
 
+@patch('assistant.volume.os_name', 'nt')
 def test_win_down() -> None:
     """Test Volume down for Windows."""
-    pass
+    assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
 
 
+@patch('assistant.volume.os_name', 'nt')
 def test_win_mute() -> None:
     """Test Volume mute for Windows."""
-    pass
+    assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
 
 
+@patch('assistant.volume.os_name', 'posix')
 def test_lin_up() -> None:
     """Test Volume up for Linux."""
-    pass
+    assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
 
 
+@patch('assistant.volume.os_name', 'posix')
 def test_lin_down() -> None:
     """Test Volume down for Linux."""
-    pass
+    assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
 
 
+@patch('assistant.volume.os_name', 'posix')
 def test_lin_mute() -> None:
     """Test Volume mute for Linux."""
-    pass
+    assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
