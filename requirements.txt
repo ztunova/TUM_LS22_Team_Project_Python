@@ -49,6 +49,12 @@ pyrect==0.2.0 \
 pyscreeze==0.1.28 \
     --hash=sha256:4428600ed19b30cd3f4b5d83767d198fc1dbae7439eecf9bd795445c009b67ae
     # via pyautogui
+python3-xlib==0.15 ; platform_system == "Linux" and python_version >= "3.0" \
+    --hash=sha256:dc4245f3ae4aa5949c1d112ee4723901ade37a96721ba9645f2bfa56e5b383f8
+    # via
+    #   mouseinfo
+    #   project (setup.cfg)
+    #   pyautogui
 pytweening==1.0.4 \
     --hash=sha256:8533282cf70b31de8a0499e1cf420930b0013c787118872b2ec899382792e2e6
     # via pyautogui
