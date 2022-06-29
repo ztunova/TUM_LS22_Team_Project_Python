@@ -49,10 +49,12 @@ pymsgbox==1.0.9 \
 pyperclip==1.8.2 \
     --hash=sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57
     # via mouseinfo
-pypiwin32==223 \
+pypiwin32==223 ; platform_system == "Windows" \
     --hash=sha256:67adf399debc1d5d14dffc1ab5acacb800da569754fafdc576b2a039485aa775 \
     --hash=sha256:71be40c1fbd28594214ecaecb58e7aa8b708eabfa0125c8a109ebd51edbd776a
-    # via pyttsx3
+    # via
+    #   project (setup.cfg)
+    #   pyttsx3
 pyrect==0.2.0 \
     --hash=sha256:f65155f6df9b929b67caffbd57c0947c5ae5449d3b580d178074bffb47a09b78
     # via pygetwindow
@@ -65,7 +67,7 @@ pyttsx3==2.90 \
 pytweening==1.0.4 \
     --hash=sha256:8533282cf70b31de8a0499e1cf420930b0013c787118872b2ec899382792e2e6
     # via pyautogui
-pywin32==304 \
+pywin32==304 ; platform_system == "Windows" \
     --hash=sha256:25746d841201fd9f96b648a248f731c1dec851c9a08b8e33da8b56148e4c65cc \
     --hash=sha256:30c53d6ce44c12a316a06c153ea74152d3b1342610f1b99d40ba2795e5af0269 \
     --hash=sha256:3c7bacf5e24298c86314f03fa20e16558a4e4138fc34615d7de4070c23e65af3 \
@@ -81,6 +83,7 @@ pywin32==304 \
     --hash=sha256:ead865a2e179b30fb717831f73cf4373401fc62fbc3455a0889a7ddac848f83e \
     --hash=sha256:f64c0377cf01b61bd5e76c25e1480ca8ab3b73f0c4add50538d332afdf8f69c5
     # via
+    #   project (setup.cfg)
     #   pypiwin32
     #   pyttsx3
 stt==1.3.0 \
