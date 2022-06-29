@@ -1,5 +1,5 @@
 """Output spoken text from String."""
-import pyttsx3
+import pyttsx3  # type: ignore
 
 
 def speak(output: str) -> None:
