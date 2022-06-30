@@ -7,10 +7,8 @@ test:
   stage: test
   image: python:3.10
   script:
-    - apt update && apt -y upgrade
-    - apt -y install sox
+    - apt update && apt -y install libespeak-dev sox
     - python3.10 -m venv venv
-    - venv/bin/python -m pip install -r requirements.txt
     - venv/bin/python -m pip install -e .[dev]
     - venv/bin/python -m pytest
     - venv/bin/sphinx-build docs public
@@ -31,8 +29,7 @@ build:
   stage: build
   image: python:3.10
   script:
-    - apt update && apt -y upgrade
-    - apt -y install sox
+    - apt update && apt -y install libespeak-dev sox
     - python3.10 -m venv venv
     - venv/bin/python -m pip install build
     - venv/bin/python -m build .
