@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Keyword_Finder."""
 
-# To Do: Echte volume und timedate aufrufe impementieren
+import difflib
 
 from assistant.timedate import timedate
 from assistant.volume import volume
@@ -66,9 +66,10 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
     }
 
     if qualifier == 2:
+        assert function_to_number.get(function_number) is not None, 'Last Function called Fehler'
         return f'{function_to_number.get(function_number)}'
 
-    function_number = 0  # Ohne qualifier == 2 muss die function_number auf 0 sein
+    function_number = 0  # Ohne qualifier == 2 muss die function_number initial auf 0 sein
 
     timedate_list = ['Uhrzeit', 'Uhr', 'Datum', 'spaet', 'Tag']
     volume_list = ['Lautstaerke', 'leiser', 'lauter']
@@ -77,10 +78,12 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
 
     # Mapping list for functions
     keylist = [timedate_list, volume_list, timer_list, weather_list]
+    word_by_word = voiceinput.split()  # Liste aller Wörter im Befehl
 
     for liste in keylist:  # Looks if input words mach the keyword list
         for element in liste:
-            if element in voiceinput:
+            if difflib.get_close_matches(element, word_by_word, 1, 0.8) != []:
                 function_number = keylist.index(liste) + 1  # last call
 
+    assert function_to_number.get(function_number) is not None, 'Function__ to be called Fehler'
     return f'{function_to_number.get(function_number)}'
