@@ -4,6 +4,9 @@ import numpy as np
 from stt import Model
 import time
 
+MODEL_PATH = 'model.tflite'
+RECORDING_PATH = 'Spracheingabe.wav'
+
 def create_audio(time):
     chunk = 1024
     format = pyaudio.paInt16
@@ -44,8 +47,8 @@ def create_audio(time):
     return file_name
 
 def convert(model_path, recording_path):
-    lm = Model(model_path)
-    fin = wave.open(recording_path, 'rb')
+    lm = Model(MODEL_PATH)
+    fin = wave.open(RECORDING_PATH, 'rb')
     audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
     output = lm.stt(audio)
     return output
