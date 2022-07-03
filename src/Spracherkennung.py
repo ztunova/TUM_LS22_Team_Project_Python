@@ -1,58 +1,63 @@
-import pyaudio
-import wave
 import numpy as np
-from stt import Model
+import pyaudio
 import time
+import wave
+
+from stt import Model
 
 MODEL_PATH = 'model.tflite'
 RECORDING_PATH = 'Spracheingabe.wav'
 
-def create_audio(time):
+
+def create_audio(seconds: int) -> str:
     chunk = 1024
-    format = pyaudio.paInt16
+    audio_format = pyaudio.paInt16
     channels = 1
     rate = 16000
-    record_seconds = time
-    file_name = "Spracheingabe.wav"
+    record_seconds = seconds
+    file_name = 'Spracheingabe.wav'
 
-    p = pyaudio.PyAudio()
+    p_audio = pyaudio.PyAudio()
 
-    stream = p.open(format = format,
-                    channels = channels,
-                    rate = rate,
-                    input = True,
-                    frames_per_buffer = chunk)
+    stream = p_audio.open(
+        format=audio_format,
+        channels=channels,
+        rate=rate,
+        input=True,
+        frames_per_buffer=chunk,
+    )
 
-    print("Aufnahme gestartet")
+    print('Aufnahme gestartet')
 
     frames = []
 
-    for i in range(0, int(rate / chunk * record_seconds)):
+    for _i in range(0, int(rate / chunk * record_seconds)):
         data = stream.read(chunk)
         frames.append(data)
 
-    print("Aufnahme beendet")
+    print('Aufnahme beendet')
 
     stream.stop_stream()
     stream.close()
-    p.terminate()
+    p_audio.terminate()
 
-    wf = wave.open(file_name, 'wb')
-    wf.setnchannels(channels)
-    wf.setsampwidth(p.get_sample_size(format))
-    wf.setframerate(rate)
-    wf.writeframes(b''.join(frames))
-    wf.close()
+    wave_file = wave.open(file_name, 'wb')
+    wave_file.setnchannels(channels)
+    wave_file.setsampwidth(p_audio.get_sample_size(audio_format))
+    wave_file.setframerate(rate)
+    wave_file.writeframes(b''.join(frames))
+    wave_file.close()
 
     return file_name
 
-def convert(model_path, recording_path):
-    lm = Model(MODEL_PATH)
+
+def convert() -> str:
+    lang_model = Model(MODEL_PATH)
     fin = wave.open(RECORDING_PATH, 'rb')
     audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
-    output = lm.stt(audio)
-    return output
+    return str(lang_model.stt(audio))
+
 
 create_audio(5)
 time.sleep(2)
-print(convert('MODEL_PATH', 'RECORDING_PATH'))
+print(convert())
