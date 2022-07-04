@@ -35,15 +35,17 @@ class TestEngine():
     def test_init(self) -> TtsEngine:
         """Test the init function."""
         with patch('pyttsx3.init', side_effect=self.mocked):
-            return TtsEngine()
+            engine = TtsEngine()
+            assert engine.engine is self.mocked.return_value
+            return engine
 
     def test_change_voice(self) -> None:
         """Test the change voice function."""
         self.mocked.return_value.getProperty.return_value = \
-            [DummyVoice(0), DummyVoice(1), DummyVoice(2), DummyVoice(3)]
+            [DummyVoice(1000), DummyVoice(1001), DummyVoice(1002), DummyVoice(1003)]
         self.engine.change_voice(2)
         self.mocked.return_value.getProperty.assert_called_with('voices')
-        self.mocked.return_value.setProperty.assert_called_with('voice', 2)
+        self.mocked.return_value.setProperty.assert_called_with('voice', 1002)
 
     def test_change_playback_speed(self) -> None:
         """Test the change playback speed function."""
