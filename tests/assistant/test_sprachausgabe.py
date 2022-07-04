@@ -1,89 +1,27 @@
 """Tests for sprachausgabe.py."""
 
-from typing import List
+from unittest.mock import MagicMock, patch
 
 from assistant.sprachausgabe import TtsEngine
-from unittest.mock import patch
 
 
 class WrongArgumentError(Exception):
     """Signal that a function was called with a wrong argument."""
 
 
-class DummyEngine():
-    """Dummy class for the pyttsx3 engine."""
+class DummyVoice():
+    """Dummy class mimicing the voice object in pyttsx3."""
 
-    def __init__(self) -> None:
-        """Initialize dummy object."""
-        self.queue_empty = True
-        self.initialized = False
-
-    def dummy_init(self) -> None:
-        """Mimick the init function."""
-        self.initialized = True
-
-    def dummy_getproperty(self, name: str) -> List[int]:
-        """Mimick the getProperty function for property 'voices'.
+    # Disable pylint errors: class has to mimic voice object
+    # pylint: disable=too-few-public-methods,invalid-name
+    def __init__(self, number: int) -> None:
+        """Init function.
 
         Args:
-            name: name of the property.
-
-        Returns:
-            List of possible voices (integers)
-
-        Raises:
-            WrongArgumentError: if function is used with wrong argument
+            number: the id of the voice
 
         """
-        # Check if engine is initialized
-        assert self.initialized
-
-        if name == 'voices':
-            return [1, 2, 3, 4]
-        raise WrongArgumentError
-
-    def dummy_setproperty(self, name: str, value: int) -> None:
-        """Mimick the setProperty function for properties 'voice' and 'rate'.
-
-        Args:
-            name: name of the property
-            value: new value for the property
-
-        Raises:
-            WrongArgumentError: if function is called with wrong arguments
-
-        """
-        # Check if engine is initialized
-        assert self.initialized
-
-        if name == 'voices':
-            assert 0 <= value <= 400
-        elif name == '':
-            assert value in [1, 2, 3, 4]
-        else:
-            raise WrongArgumentError
-
-    def dummy_say(self, text: str) -> None:
-        """Mimick the say function.
-
-        Args:
-            text: Output text
-
-        """
-        # Check if engine is initialized
-        assert self.initialized
-
-        # Check that the text is not empty
-        assert text != ''
-        self.queue_empty = False
-
-    def dummy_runandwait(self) -> None:
-        """Mimick the runAndWait function."""
-        # Check if engine is initialized
-        assert self.initialized
-
-        assert not self.queue_empty
-        self.queue_empty = True
+        self.id = number
 
 
 class TestEngine():
@@ -91,29 +29,41 @@ class TestEngine():
 
     def __init__(self) -> None:
         """Initialize test object."""
-        self.dummy = DummyEngine()
+        self.mocked = MagicMock()
         self.engine = self.test_init()
 
     def test_init(self) -> TtsEngine:
         """Test the init function."""
-        with patch('pyttsx3.init', side_effect=self.dummy.dummy_init):
+        with patch('pyttsx3.init', side_effect=self.mocked):
             return TtsEngine()
 
-    def test_change_voice(self):
+    def test_change_voice(self) -> None:
         """Test the change voice function."""
-        with patch('self.engine.getProperty',
-                   side_effect=self.dummy.dummy_getproperty):
-            with patch('self.engine.setProperty',
-                       side_effect=self.dummy.dummy_setproperty):
-                self.engine.change_voice(3)
+        self.mocked.return_value.getProperty.return_value = \
+            [DummyVoice(0), DummyVoice(1), DummyVoice(2), DummyVoice(3)]
+        self.engine.change_voice(2)
+        self.mocked.return_value.getProperty.assert_called_with('voices')
+        self.mocked.return_value.setProperty.assert_called_with('voice', 2)
+
+    def test_change_playback_speed(self) -> None:
+        """Test the change playback speed function."""
+        self.engine.change_playback_speed(150)
+        self.mocked.return_value.setProperty.assert_called_with('rate', 150)
+
+    def test_speak(self) -> None:
+        """Test the speak function."""
+        self.engine.speak('Dies ist ein Test.')
+        self.mocked.return_value.say.assert_called_with('Dies ist ein Test.')
+        self.mocked.return_value.runAndWait.assert_called()
 
 
-def test_tts() -> None:
-    """Play a test Strings. Does not actually test correctness."""
-    engine = TtsEngine()
-    engine.speak('Dies ist ein Test für die Sprachausgabe.')
+def test_run() -> None:
+    """Runs all Test from the TestEngine class."""
+    test = TestEngine()
+    test.test_change_playback_speed()
+    test.test_change_voice()
+    test.test_speak()
 
 
 if __name__ == '__main__':
-    test = TestEngine()
-    test.test_change_voice()
+    test_run()
