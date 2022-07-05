@@ -1,15 +1,26 @@
-import numpy as np
-import pyaudio
+"""Create audio file from microphone input and convert it to the text."""
+
 import time
 import wave
 
-from stt import Model
+import numpy as np
+import pyaudio  # type: ignore  # module missing library stubs or py.typed marker
+from stt import Model  # type: ignore  # module missing library stubs or py.typed marker
 
 MODEL_PATH = 'model.tflite'
 RECORDING_PATH = 'Spracheingabe.wav'
 
 
 def create_audio(seconds: int) -> str:
+    """Create audio file from microphone input.
+
+    Args:
+        seconds: int Duration of the recording
+
+    Returns:
+        str: Name of the created recording
+
+    """
     chunk = 1024
     audio_format = pyaudio.paInt16
     channels = 1
@@ -52,10 +63,16 @@ def create_audio(seconds: int) -> str:
 
 
 def convert() -> str:
-    lang_model = Model(MODEL_PATH)
+    """Convert audio file to text transcript.
+
+    Returns:
+        str: Text transcript of the given audio file
+
+    """
+    language_model = Model(MODEL_PATH)
     fin = wave.open(RECORDING_PATH, 'rb')
     audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
-    return str(lang_model.stt(audio))
+    return str(language_model.stt(audio))  # Returning Any from function declared to return "str"
 
 
 create_audio(5)
