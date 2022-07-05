@@ -7,9 +7,8 @@ test:
   stage: test
   image: python:3.10
   script:
-    - add-apt-repository ppa:deadsnakes/ppa
-    - apt update && apt upgrade -y
-    - apt install -y python3.10-dev 
+    - apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+    - apt-get install ffmpeg libav-tools
     - python3.10 -m venv venv
     - venv/bin/python -m pip install -r requirements.txt
     - venv/bin/python -m pip install -e .[dev]
@@ -32,9 +31,8 @@ build:
   stage: build
   image: python:3.10
   script:
-    - add-apt-repository ppa:deadsnakes/ppa
-    - apt update && apt upgrade -y
-    - apt install -y python3.10-dev
+    - apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+    - apt-get install ffmpeg libav-tools
     - python3.10 -m venv venv
     - venv/bin/python -m pip install build
     - venv/bin/python -m build .
