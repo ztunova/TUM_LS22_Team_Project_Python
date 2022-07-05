@@ -72,7 +72,7 @@ def convert() -> str:
     language_model = Model(MODEL_PATH)
     fin = wave.open(RECORDING_PATH, 'rb')
     audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
-    return str(language_model.stt(audio))  # Returning Any from function declared to return "str"
+    return str(language_model.stt(audio))  # model.stt returns Any
 
 
 create_audio(5)
