@@ -73,3 +73,19 @@ def test_keyword_qualifiers() -> None:
     assert keyword_find('Setzte den Timer fuer 10 Minuten', 2, 2) == 'time-reminder'
     assert keyword_find('Wie wird das Wetter morgen', 2, 3) == 'weatherreport'
     # assert keyword_find('Unbekannte Funktion', 2, 4) == 'Invaild last function call'
+
+
+# Test for words with an error in them
+
+
+def test_keyword_with_errors() -> None:
+    """Test if keywords with spellimng mistakes are sitll recognised."""
+    with patch('assistant.keyword_find.timedate', placeholder):
+        assert keyword_find('Ur', 1, 0) == 'Ur'
+        assert keyword_find('Urzet', 1, 0) == 'Urzet'
+        assert keyword_find('Datu', 1, 0) == 'Datu'
+        assert keyword_find('spet', 1, 0) == 'spet'
+
+    with patch('assistant.keyword_find.volume', placeholder):
+        assert keyword_find('later', 1, 0) == 'later'
+        assert keyword_find('laiser', 1, 0) == 'laiser'
