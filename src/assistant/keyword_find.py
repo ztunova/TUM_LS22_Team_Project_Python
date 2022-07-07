@@ -57,33 +57,27 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
         futher input from the user
 
     """
-    function_to_number = {
-        0: 'Default Fehler',
-        1: timedate(voiceinput),
-        2: volume(voiceinput),
-        3: timer_reminder(),
-        4: weatherreport(),
+    keyword_to_function = {
+        ('Uhrzeit', 'Uhr', 'Datum', 'spaet', 'Tag'): timedate(voiceinput),
+        ('Lautstaerke', 'leiser', 'lauter'): volume(voiceinput),
+        ('Timer', 'Erinnerung'): timer_reminder(),
+        ('Wetter', 'Vorhersage'): weatherreport(),
     }
 
     if qualifier == 2:
-        assert function_to_number.get(function_number) is not None, 'Last Function called Fehler'
-        return f'{function_to_number.get(function_number)}'
+        print(list(keyword_to_function.values()))
+        print('das war der output')
+        assert len(
+            list(keyword_to_function.values()),
+        ) >= function_number + 1, 'Invaild last function call'
+        return list(keyword_to_function.values())[function_number]
 
     function_number = 0  # Ohne qualifier == 2 muss die function_number initial auf 0 sein
-
-    timedate_list = ['Uhrzeit', 'Uhr', 'Datum', 'spaet', 'Tag']
-    volume_list = ['Lautstaerke', 'leiser', 'lauter']
-    timer_list = ['Timer', 'Erinnerung']
-    weather_list = ['Wetter', 'Vorhersage']
-
-    # Mapping list for functions
-    keylist = [timedate_list, volume_list, timer_list, weather_list]
     word_by_word = voiceinput.split()  # Liste aller Wörter im Befehl
 
-    for liste in keylist:  # Looks if input words mach the keyword list
-        for element in liste:
-            if difflib.get_close_matches(element, word_by_word, 1, 0.8) != []:
-                function_number = keylist.index(liste) + 1  # last call
+    for keywords_list, function in keyword_to_function.items():
+        for keyword in keywords_list:
+            if difflib.get_close_matches(keyword, word_by_word, 1, 0.8) != []:
+                return function
 
-    assert function_to_number.get(function_number) is not None, 'Function__ to be called Fehler'
-    return f'{function_to_number.get(function_number)}'
+    return 'Leider kann ich mit diesem Befehl nichts anfangen'
