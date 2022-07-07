@@ -12,7 +12,7 @@ from assistant.volume import STEP
 
 
 def placeholder(fake: str) -> str:
-    """Test Output if function does not exist."""
+    """Fake placholder function for patches."""
     return fake
 
 

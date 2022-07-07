@@ -46,7 +46,7 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
     Args:
         voiceinput: str Userinput interpreted as a string
         function_number: int
-         qualifier: int
+        qualifier: int
 
     Returns:
         str: Voiceoutput for user as a string
@@ -72,8 +72,8 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
         ) >= function_number + 1, 'Invaild last function call'
         return list(keyword_to_function.values())[function_number]
 
-    function_number = 0  # Ohne qualifier == 2 muss die function_number initial auf 0 sein
-    word_by_word = voiceinput.split()  # Liste aller Wörter im Befehl
+    function_number = 0  # Without qualifiers == 2 fucntion_number has to be 0
+    word_by_word = voiceinput.split()  # list of all words in the voiceinput
 
     for keywords_list, function in keyword_to_function.items():
         for keyword in keywords_list:
