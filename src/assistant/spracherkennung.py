@@ -1,6 +1,5 @@
 """Create audio file from microphone input and convert it to the text."""
 
-import time
 import wave
 
 import numpy as np
@@ -75,6 +74,22 @@ def convert() -> str:
     return str(language_model.stt(audio))  # model.stt returns Any
 
 
+def find_keyword(transcript: str) -> int:
+    """Find if there is a keyword in the speech transcript.
+
+    Args:
+        transcript: str Text transcript of the speech
+
+    Returns:
+        int: returns 1 if transcript contains keyword, otherwise returns 0
+
+    """
+    transcript = transcript.replace(' ', '')
+    if 'jerkins' in transcript:
+        return 1
+    return 0
+
+
 create_audio(5)
-time.sleep(2)
 print(convert())
+find_keyword('abcd efghitr ewqje rk ins')
