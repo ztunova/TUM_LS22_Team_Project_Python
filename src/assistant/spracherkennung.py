@@ -85,11 +85,34 @@ def find_keyword(transcript: str) -> int:
 
     """
     transcript = transcript.replace(' ', '')
-    if 'jerkins' in transcript:
-        return 1
+    keywords = ['jerkins', 'jerkyns', 'jelkins', 'jakins', 'jekins']
+    for keyword in keywords:
+        if keyword in transcript:
+            return 1
     return 0
 
 
-create_audio(5)
-print(convert())
-find_keyword('abcd efghitr ewqje rk ins')
+def activate_assistant() -> None:
+    """Activate assistant on recognized keyword."""
+    activated = 0
+    no_input = 0
+    attempts = 3
+    while True:
+        create_audio(5)
+        text = convert()
+        print(text)
+        print(find_keyword(text))
+        if activated:
+            print('call keyword_find')
+        if find_keyword(text):
+            activated = 1
+        if text == '':
+            no_input = no_input + 1
+            print('remaining attempts: ', attempts - no_input)
+        elif text != '' and no_input > 0:
+            no_input = 0
+        if no_input == attempts:
+            break
+
+
+activate_assistant()
