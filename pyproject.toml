@@ -48,6 +48,15 @@ mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
 namespace_packages = true
 strict = true
 
+[[tool.mypy.overrides]]
+module = [
+    "pyttsx3",
+    "stt",
+    "pyaudio",
+    "pyautogui"
+]
+ignore_missing_imports = true
+
 [tool.pydocstyle]
 convention = "google"
 add_select = ["D204", "D400", "D401", "D404", "D413"]

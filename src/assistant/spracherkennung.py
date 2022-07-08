@@ -4,8 +4,8 @@ import time
 import wave
 
 import numpy as np
-import pyaudio  # type: ignore  # module missing library stubs or py.typed marker
-from stt import Model  # type: ignore  # module missing library stubs or py.typed marker
+import pyaudio
+from stt import Model
 
 MODEL_PATH = 'src/models/model.tflite'
 RECORDING_PATH = 'Spracheingabe.wav'

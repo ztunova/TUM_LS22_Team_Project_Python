@@ -11,7 +11,7 @@ import wave
 from typing import Tuple  # noqa: TC002
 
 import numpy
-from stt import Model  # type: ignore
+from stt import Model
 
 try:
     from shlex import quote

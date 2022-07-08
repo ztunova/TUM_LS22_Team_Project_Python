@@ -1,5 +1,5 @@
 """Output spoken text from String."""
-import pyttsx3  # type: ignore   # module missing library stubs or py.typed marker
+import pyttsx3
 
 
 class TtsEngine():
