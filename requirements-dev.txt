@@ -393,6 +393,17 @@ py==1.11.0 \
     --hash=sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719 \
     --hash=sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378
     # via pytest
+pyaudio==0.2.11 \
+    --hash=sha256:0d92f6a294565260a282f7c9a0b0d309fc8cc988b5ee5b50645634ab9e2da7f7 \
+    --hash=sha256:259bb9c1363be895b4f9a97e320a6017dd06bc540728c1a04eb4a7b6fe75035b \
+    --hash=sha256:2a19bdb8ec1445b4f3e4b7b109e0e4cec1fd1f1ce588592aeb6db0b58d4fb3b0 \
+    --hash=sha256:51b558d1b28c68437b53218279110db44f69f3f5dd3d81859f569a4a96962bdc \
+    --hash=sha256:589bfad2c615dd4b5d3757e763019c42ab82f06fba5cae64ec02fd7f5ae407ed \
+    --hash=sha256:8f89075b4844ea94dde0c951c2937581c989fabd4df09bfd3f075035f50955df \
+    --hash=sha256:93bfde30e0b64e63a46f2fd77e85c41fd51182a4a3413d9edfaf9ffaa26efb74 \
+    --hash=sha256:cf1543ba50bd44ac0d0ab5c035bb9c3127eb76047ff12235149d9adf86f532b6 \
+    --hash=sha256:f78d543a98b730e64621ebf7f3e2868a79ade0a373882ef51c0293455ffa8e6e
+    # via project (setup.cfg)
 pyautogui==0.9.53 \
     --hash=sha256:d31de8f712218d90be7fc98091fce1a12a3e9196e0c814eb9afd73bb2ec97035
     # via project (setup.cfg)
@@ -431,10 +442,12 @@ pyparsing==3.0.9 \
 pyperclip==1.8.2 \
     --hash=sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57
     # via mouseinfo
-pypiwin32==223 \
+pypiwin32==223 ; platform_system == "Windows" \
     --hash=sha256:67adf399debc1d5d14dffc1ab5acacb800da569754fafdc576b2a039485aa775 \
     --hash=sha256:71be40c1fbd28594214ecaecb58e7aa8b708eabfa0125c8a109ebd51edbd776a
-    # via pyttsx3
+    # via
+    #   project (setup.cfg)
+    #   pyttsx3
 pyrect==0.2.0 \
     --hash=sha256:f65155f6df9b929b67caffbd57c0947c5ae5449d3b580d178074bffb47a09b78
     # via pygetwindow
@@ -481,7 +494,7 @@ pytz==2022.1 \
     --hash=sha256:1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7 \
     --hash=sha256:e68985985296d9a66a881eb3193b0906246245294a881e7c8afe623866ac6a5c
     # via babel
-pywin32==304 \
+pywin32==304 ; platform_system == "Windows" \
     --hash=sha256:25746d841201fd9f96b648a248f731c1dec851c9a08b8e33da8b56148e4c65cc \
     --hash=sha256:30c53d6ce44c12a316a06c153ea74152d3b1342610f1b99d40ba2795e5af0269 \
     --hash=sha256:3c7bacf5e24298c86314f03fa20e16558a4e4138fc34615d7de4070c23e65af3 \
@@ -497,6 +510,7 @@ pywin32==304 \
     --hash=sha256:ead865a2e179b30fb717831f73cf4373401fc62fbc3455a0889a7ddac848f83e \
     --hash=sha256:f64c0377cf01b61bd5e76c25e1480ca8ab3b73f0c4add50538d332afdf8f69c5
     # via
+    #   project (setup.cfg)
     #   pypiwin32
     #   pyttsx3
 requests==2.28.0 \
