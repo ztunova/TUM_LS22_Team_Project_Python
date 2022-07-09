@@ -11,7 +11,7 @@ from assistant.volume import STEP, volume
 def test_wrong_keyword() -> None:
     """Test wrong Keyword handling."""
     assert volume('Wie viel Uhr ist es') == \
-        'Leider kann ich mit diesen Befehl nichts anfangen'
+        'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
 with patch('assistant.volume.os') as os_mock:
