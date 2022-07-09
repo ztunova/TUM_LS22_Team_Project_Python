@@ -3,6 +3,7 @@
 """Date and Time Function."""
 
 import datetime
+import difflib
 
 
 def timedate(taskinput: str) -> str:
@@ -15,23 +16,19 @@ def timedate(taskinput: str) -> str:
         Current Time or Date.
 
     """
-    time_list = ['Uhrzeit', 'Uhr', 'spaet']
-    date_list = ['Datum', 'Tag']
-    keylist = [time_list, date_list]
+    keyword_to_function = {
+        ('Uhrzeit', 'Uhr', 'spaet'): time(),
+        ('Datum', 'Tag'): date(),
+    }
 
-    function_number = 0
-    for liste in keylist:
-        for element in liste:
-            if element in taskinput:
-                function_number = keylist.index(liste) + 1
+    word_by_word = taskinput.split()
 
-    if function_number == 1:
-        return time()
+    for keywords_list, function in keyword_to_function.items():
+        for keyword in keywords_list:
+            if difflib.get_close_matches(keyword, word_by_word, 1, 0.8) != []:
+                return function
 
-    if function_number == 2:
-        return date()
-
-    return 'Leider kann ich mit diesen Befehl nichts anfangen'
+    return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
 def time() -> str:
