@@ -6,7 +6,7 @@ import os
 from os import name as os_name
 
 if os_name == 'nt':
-    import pyautogui  # type: ignore
+    import pyautogui
 
 STEP = 10
 OS = os_name

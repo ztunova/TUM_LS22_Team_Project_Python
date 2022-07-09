@@ -4,8 +4,8 @@ import difflib
 import wave
 
 import numpy as np
-import pyaudio  # type: ignore  # module missing library stubs or py.typed marker
-from stt import Model  # type: ignore  # module missing library stubs or py.typed marker
+import pyaudio
+from stt import Model
 
 from assistant.keyword_find import keyword_find
 from assistant.sprachausgabe import TtsEngine
