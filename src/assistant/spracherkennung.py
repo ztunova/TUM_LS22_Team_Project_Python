@@ -1,10 +1,14 @@
 """Create audio file from microphone input and convert it to the text."""
 
+import difflib
 import wave
 
 import numpy as np
 import pyaudio  # type: ignore  # module missing library stubs or py.typed marker
 from stt import Model  # type: ignore  # module missing library stubs or py.typed marker
+
+from assistant.keyword_find import keyword_find
+from assistant.sprachausgabe import TtsEngine
 
 MODEL_PATH = 'src/models/model.tflite'
 RECORDING_PATH = 'Spracheingabe.wav'
@@ -74,45 +78,36 @@ def convert() -> str:
     return str(language_model.stt(audio))  # model.stt returns Any
 
 
-def find_keyword(transcript: str) -> int:
-    """Find if there is a keyword in the speech transcript.
-
-    Args:
-        transcript: str Text transcript of the speech
-
-    Returns:
-        int: returns 1 if transcript contains keyword, otherwise returns 0
-
-    """
-    transcript = transcript.replace(' ', '')
-    keywords = ['jerkins', 'jerkyns', 'jelkins', 'jakins', 'jekins']
-    for keyword in keywords:
-        if keyword in transcript:
-            return 1
-    return 0
-
-
 def activate_assistant() -> None:
     """Activate assistant on recognized keyword."""
+    tts_engine = TtsEngine()
     activated = 0
     no_input = 0
     attempts = 3
     while True:
         create_audio(5)
         text = convert()
+        word_by_word = text.split()
         print(text)
-        print(find_keyword(text))
-        if activated:
-            print('call keyword_find')
-        if find_keyword(text):
-            activated = 1
-        if text == '':
+        if text != '':
+            if no_input != 0:
+                no_input = 0
+            if activated:
+                if difflib.get_close_matches('ausschalten', word_by_word, 1, 0.7) != []:
+                    tts_engine.speak('assistant turned off')
+                    break
+                result = keyword_find(text, 1, 1)
+                tts_engine.speak(result)
+        else:
+            if no_input == 3:
+                tts_engine.speak('assistant turned off')
+                break
             no_input = no_input + 1
             print('remaining attempts: ', attempts - no_input)
-        elif text != '' and no_input > 0:
-            no_input = 0
-        if no_input == attempts:
-            break
+        # check for keyword for activation
+        if difflib.get_close_matches('jarvis', word_by_word, 1, 0.7) != []:
+            tts_engine.speak('assistant activated')
+            activated = 1
 
 
 activate_assistant()
