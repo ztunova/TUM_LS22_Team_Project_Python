@@ -30,7 +30,7 @@ def volume(taskinput: str) -> str:
         ('leiser'): quieter(),
     }
 
-    word_by_word = taskinput.split()  # list of all words in the voiceinput
+    word_by_word = taskinput.split()
 
     for keywords_list, function in keyword_to_function.items():
         for keyword in keywords_list:
