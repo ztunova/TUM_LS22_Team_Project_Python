@@ -92,10 +92,10 @@ def activate_assistant() -> None:
         if text != '':
             if no_input != 0:
                 no_input = 0
+            if difflib.get_close_matches('ausschalten', word_by_word, 1, 0.7) != []:
+                tts_engine.speak('assistant turned off')
+                break
             if activated:
-                if difflib.get_close_matches('ausschalten', word_by_word, 1, 0.7) != []:
-                    tts_engine.speak('assistant turned off')
-                    break
                 result = keyword_find(text, 1, 1)
                 tts_engine.speak(result)
         else:
