@@ -22,12 +22,10 @@ def volume(taskinput: str) -> str:
         Executed command or error.
 
     """
-    taskinput = taskinput.lower()
-
     keyword_to_function = {
         ('stumm', 'null', 'mute'): mute(),
-        ('lauter'): louder(),
-        ('leiser'): quieter(),
+        ('lauter', 'erhöhen'): louder(),
+        ('leiser', 'verringern'): quieter(),
     }
 
     word_by_word = taskinput.split()
