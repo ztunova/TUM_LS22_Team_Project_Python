@@ -18,16 +18,16 @@ def test_wrong_keyword() -> None:
 def test_volume(mock_system) -> None:
     """Test Volume up, down and mute for all Systems."""
     with patch('platform.system', return_value='Windows'):
-        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
-        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
-        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
+        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht win'
+        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert win'
+        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt win'
 
     with patch('platform.system', return_value='Linux'):
-        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
+        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht lin'
         mock_system.assert_called()
-        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
+        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert lin'
         mock_system.assert_called()
-        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
+        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt lin'
         mock_system.assert_called()
 
     with patch('platform.system', return_value='Java'):
