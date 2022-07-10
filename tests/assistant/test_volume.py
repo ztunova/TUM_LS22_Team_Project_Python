@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Volume tests."""
 
-import platform
-from unittest.mock import patch
+# import platform
+import unittest.mock
 
 from assistant.volume import STEP, volume
 
@@ -14,41 +14,20 @@ def test_wrong_keyword() -> None:
         'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-with patch('assistant.volume.os.system') as os_mock:
-    if platform.system() == 'Windows':
-        with patch('assistant.volume.pyautogui') as pyautogui_mock:
+@unittest.mock.patch('assistant.volume.os.system')
+def test_volume_lin() -> None:
+    """Test Volume up, down and mute for all Systems."""
+    with unittest.mock.patch('platform.system', return_value='Windows'):
+        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
+        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
+        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
 
-            def test_volume_win() -> None:
-                """Test Volume up, down and mute for all Systems."""
-                pyautogui_mock.return_value = 'Ausgeführt'
-                with patch('platform.system', return_value='Windows'):
-                    assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
-                    assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
-                    assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
+    with unittest.mock.patch('platform.system', return_value='Linux'):
+        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
+        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
+        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
 
-                with patch('platform.system', return_value='Linux'):
-                    assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
-                    assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
-                    assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
-
-                with patch('platform.system', return_value='Java'):
-                    assert volume('Mach lauter') == 'Es ist ein Fehler aufgetreten'
-                    assert volume('Mach leiser') == 'Es ist ein Fehler aufgetreten'
-                    assert volume('Mach stumm') == 'Es ist ein Fehler aufgetreten'
-
-    def test_volume_lin() -> None:
-        """Test Volume up, down and mute for all Systems."""
-        with patch('platform.system', return_value='Windows'):
-            assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
-            assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
-            assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
-
-        with patch('platform.system', return_value='Linux'):
-            assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
-            assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
-            assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
-
-        with patch('platform.system', return_value='Java'):
-            assert volume('Mach lauter') == 'Es ist ein Fehler aufgetreten'
-            assert volume('Mach leiser') == 'Es ist ein Fehler aufgetreten'
-            assert volume('Mach stumm') == 'Es ist ein Fehler aufgetreten'
+    with unittest.mock.patch('platform.system', return_value='Java'):
+        assert volume('Mach lauter') == 'Es ist ein Fehler aufgetreten'
+        assert volume('Mach leiser') == 'Es ist ein Fehler aufgetreten'
+        assert volume('Mach stumm') == 'Es ist ein Fehler aufgetreten'
