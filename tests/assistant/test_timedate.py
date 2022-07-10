@@ -3,7 +3,7 @@
 """Date and Time tests."""
 
 import datetime as dt
-from unittest.mock import patch
+
 import time_machine
 
 from assistant.timedate import timedate
