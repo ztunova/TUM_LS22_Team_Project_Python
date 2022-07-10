@@ -22,6 +22,8 @@ def test_date() -> None:
     """Test date function return current date."""
     assert timedate('Welcher Tag ist heute') == \
         f'Es ist der {dt.datetime.now().strftime("%d/%m/%Y")}'
+
+
 traveller.stop()
 
 
