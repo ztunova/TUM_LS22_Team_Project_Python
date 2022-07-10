@@ -3,7 +3,7 @@
 """Volume tests."""
 
 # import platform
-import unittest.mock
+from unittest.mock import patch
 
 from assistant.volume import STEP, volume
 
@@ -14,20 +14,23 @@ def test_wrong_keyword() -> None:
         'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-@unittest.mock.patch('assistant.volume.os.system')
-def test_volume_lin() -> None:
+@patch('assistant.volume.system')
+def test_volume(mock_system) -> None:
     """Test Volume up, down and mute for all Systems."""
-    with unittest.mock.patch('platform.system', return_value='Windows'):
+    with patch('platform.system', return_value='Windows'):
         assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
         assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
         assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
 
-    with unittest.mock.patch('platform.system', return_value='Linux'):
+    with patch('platform.system', return_value='Linux'):
         assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
+        mock_system.assert_called()
         assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
+        mock_system.assert_called()
         assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
+        mock_system.assert_called()
 
-    with unittest.mock.patch('platform.system', return_value='Java'):
+    with patch('platform.system', return_value='Java'):
         assert volume('Mach lauter') == 'Es ist ein Fehler aufgetreten'
         assert volume('Mach leiser') == 'Es ist ein Fehler aufgetreten'
         assert volume('Mach stumm') == 'Es ist ein Fehler aufgetreten'

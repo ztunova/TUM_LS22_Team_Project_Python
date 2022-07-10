@@ -3,8 +3,8 @@
 """Volume Function."""
 
 import difflib
-import os
 import platform
+from os import system
 
 if platform.system() == 'Windows':
     import pyautogui
@@ -46,7 +46,7 @@ def louder() -> str:
         return f'Lautstärke wurde um {STEP}% erhöht'
 
     if platform.system() == 'Linux':
-        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ +{STEP}%')
+        system(f'pactl set-sink-volume @DEFAULT_SINK@ +{STEP}%')
         return f'Lautstärke wurde um {STEP}% erhöht'
 
     return 'Es ist ein Fehler aufgetreten'
@@ -60,7 +60,7 @@ def quieter() -> str:
         # Pyautogui kann die lautsärke nur in 2% Schritten ändern
 
     if platform.system() == 'Linux':
-        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ -{STEP}%')
+        system(f'pactl set-sink-volume @DEFAULT_SINK@ -{STEP}%')
         return f'Lautstärke wurde um {STEP}% verringert'
         # Pyautogui kann die lautsärke nur in 2% Schritten ändern
     return 'Es ist ein Fehler aufgetreten'
@@ -73,7 +73,7 @@ def mute() -> str:
         return 'Stummschaltung wurde gedrückt'
 
     if platform.system() == 'Linux':
-        os.system('pactl set-sink-mute @DEFAULT_SINK@ toggle')
+        system('pactl set-sink-mute @DEFAULT_SINK@ toggle')
         return 'Stummschaltung wurde gedrückt'
 
     return 'Es ist ein Fehler aufgetreten'
