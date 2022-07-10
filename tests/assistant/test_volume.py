@@ -14,14 +14,13 @@ def test_wrong_keyword() -> None:
         'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-with patch('assistant.volume.os') as os_mock:
+with patch('assistant.volume.os.system') as os_mock:
     if platform.system() == 'Windows':
         with patch('assistant.volume.pyautogui') as pyautogui_mock:
 
             def test_volume_win() -> None:
                 """Test Volume up, down and mute for all Systems."""
                 pyautogui_mock.return_value = 'Ausgeführt'
-                os_mock.return_value = 'Ausgeführt'
                 with patch('platform.system', return_value='Windows'):
                     assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
                     assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
@@ -39,7 +38,6 @@ with patch('assistant.volume.os') as os_mock:
 
     def test_volume_lin() -> None:
         """Test Volume up, down and mute for all Systems."""
-        os_mock.return_value = 'Ausgeführt'
         with patch('platform.system', return_value='Windows'):
             assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
             assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
