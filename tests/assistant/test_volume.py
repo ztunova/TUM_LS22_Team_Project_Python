@@ -8,27 +8,38 @@ from unittest.mock import patch
 from assistant.volume import STEP, volume
 
 
+def mock_win(inp: str, presses: int) -> str:
+    """Windows Mock."""
+    print(inp)
+    print(presses)
+    return inp
+
+
+def mock_lin(inp: str) -> str:
+    """Linux Mock."""
+    print(inp)
+    return inp
+
+
 def test_wrong_keyword() -> None:
     """Test wrong Keyword handling."""
     assert volume('Wie viel Uhr ist es') == \
         'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-@patch('assistant.volume.system')
-def test_volume(mock_system) -> None:
+def test_volume() -> None:
     """Test Volume up, down and mute for all Systems."""
-    with patch('platform.system', return_value='Windows'):
+    with patch('platform.system', return_value='Windows'),\
+         patch('assistant.volume.pyautogui.press', mock_win):
         assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht win'
         assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert win'
         assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt win'
 
-    with patch('platform.system', return_value='Linux'):
+    with patch('platform.system', return_value='Linux'),\
+         patch('assistant.volume.os.system', mock_lin):
         assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht lin'
-        mock_system.assert_called()
         assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert lin'
-        mock_system.assert_called()
         assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt lin'
-        mock_system.assert_called()
 
     with patch('platform.system', return_value='Java'):
         assert volume('Mach lauter') == 'Es ist ein Fehler aufgetreten'
