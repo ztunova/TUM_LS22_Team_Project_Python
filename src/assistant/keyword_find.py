@@ -60,10 +60,10 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
 
     """
     keyword_to_function = {
-        ('Uhrzeit', 'Uhr', 'Datum', 'spaet', 'Tag'): timedate,
-        ('Lautstaerke', 'leiser', 'lauter'): volume,
-        ('Timer', 'Erinnerung'): timer_reminder,
-        ('Wetter', 'Vorhersage'): weatherreport,
+        ('uhrzeit', 'uhr', 'datum', 'spät', 'tag'): timedate,
+        ('lautstaerke', 'leiser', 'lauter'): volume,
+        ('timer', 'erinnerung'): timer_reminder,
+        ('wetter', 'vorhersage'): weatherreport,
     }
 
     if qualifier == 2:

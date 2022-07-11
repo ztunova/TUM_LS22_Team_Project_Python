@@ -93,20 +93,20 @@ def activate_assistant() -> None:
             if no_input != 0:
                 no_input = 0
             if difflib.get_close_matches('ausschalten', word_by_word, 1, 0.7) != []:
-                tts_engine.speak('assistant turned off')
+                tts_engine.speak('assistant ausgeschaltet')
                 break
             if activated:
                 result = keyword_find(text, 1, 1)
                 tts_engine.speak(result)
         else:
             if no_input == 3:
-                tts_engine.speak('assistant turned off')
+                tts_engine.speak('assistant ausgeschaltet')
                 break
             no_input = no_input + 1
             print('remaining attempts: ', attempts - no_input)
         # check for keyword for activation
-        if difflib.get_close_matches('jarvis', word_by_word, 1, 0.7) != []:
-            tts_engine.speak('assistant activated')
+        if difflib.get_close_matches('start', word_by_word, 1, 0.7) != []:
+            tts_engine.speak('assistant eingeschaltet')
             activated = 1
 
 
