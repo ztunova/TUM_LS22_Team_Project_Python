@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Volume Function."""
 
-import difflib
-import platform
+# import difflib
 import os
+import platform
 
 if platform.system() == 'Windows':
     import pyautogui
@@ -22,18 +22,19 @@ def volume(taskinput: str) -> str:
         Executed command or error.
 
     """
-    keyword_to_function = {
-        ('stumm', 'null', 'mute'): mute(),
-        ('lauter', 'erhöhen'): louder(),
-        ('leiser', 'verringern'): quieter(),
-    }
+    taskinput = taskinput.lower()
 
-    word_by_word = taskinput.split()
+    if 'stumm' in taskinput:
+        return mute()
 
-    for keywords_list, function in keyword_to_function.items():
-        for keyword in keywords_list:
-            if difflib.get_close_matches(keyword, word_by_word, 1, 0.8) != []:
-                return function
+    if 'null' in taskinput:
+        return mute()
+
+    if 'leiser' in taskinput:
+        return quieter()
+
+    if 'lauter' in taskinput:
+        return louder()
 
     return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
@@ -77,3 +78,7 @@ def mute() -> str:
         return 'Stummschaltung wurde gedrückt lin'
 
     return 'Es ist ein Fehler aufgetreten'
+
+
+if __name__ == '__main__':
+    volume('Wie viel Uhr ist es')
