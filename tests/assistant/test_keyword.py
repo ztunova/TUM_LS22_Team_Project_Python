@@ -57,9 +57,9 @@ def test_keyword_weatherreport() -> None:
 
 
 def test_full_call_keyword_volume() -> None:
-    """Test Volume up for Windows."""
-    with patch('platform.system', return_value='Windows'), \
-         patch('assistant.volume.pyautogui.press', placeholder_press):
+    """Test Volume up for Linux."""
+    with patch('platform.system', return_value='Linux'), \
+         patch('assistant.volume.os.system', placeholder_press):
         assert keyword_find('Mach lauter', 1, 0) == f'Lautstärke wurde um {STEP}% erhöht'
 
 
@@ -76,8 +76,8 @@ def test_keyword_qualifiers() -> None:
     """Test if last function called is executed correctly."""
     assert keyword_find('Welcher Tag ist heute', 2, 0) == \
         f'Es ist der {dt.datetime.now().strftime("%d/%m/%Y")}'
-    with patch('platform.system', return_value='Windows'), \
-         patch('assistant.volume.pyautogui.press', placeholder_press):
+    with patch('platform.system', return_value='Linux'), \
+         patch('assistant.volume.os.system', placeholder_press):
         assert keyword_find('Mach lauter', 2, 1) == f'Lautstärke wurde um {STEP}% erhöht'
     assert keyword_find('Setzte den Timer fuer 10 Minuten', 2, 2) == 'time-reminder'
     assert keyword_find('Wie wird das Wetter morgen', 2, 3) == 'weatherreport'
