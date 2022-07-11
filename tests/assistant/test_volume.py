@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Volume tests."""
 
-# import platform
+import platform
 from unittest.mock import patch
 
 from assistant.volume import STEP, volume
@@ -27,25 +27,25 @@ def test_wrong_keyword() -> None:
         'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-def test_win_up() -> None:
-    """Test Volume up for Windows."""
-    with patch('platform.system', return_value='Windows'), \
-         patch('assistant.volume.pyautogui.press', placeholder_press):
-        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht win'
+if platform.system() == 'Windows':
 
+    def test_win_up() -> None:
+        """Test Volume up for Windows."""
+        with patch('platform.system', return_value='Windows'), \
+             patch('assistant.volume.pyautogui.press', placeholder_press):
+            assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht win'
 
-def test_win_down() -> None:
-    """Test Volume down for Windows."""
-    with patch('platform.system', return_value='Windows'), \
-         patch('assistant.volume.pyautogui.press', placeholder_press):
-        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert win'
+    def test_win_down() -> None:
+        """Test Volume down for Windows."""
+        with patch('platform.system', return_value='Windows'), \
+             patch('assistant.volume.pyautogui.press', placeholder_press):
+            assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert win'
 
-
-def test_win_mute() -> None:
-    """Test Volume mute for Windows."""
-    with patch('platform.system', return_value='Windows'), \
-         patch('assistant.volume.pyautogui.press', placeholder_press):
-        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt win'
+    def test_win_mute() -> None:
+        """Test Volume mute for Windows."""
+        with patch('platform.system', return_value='Windows'), \
+             patch('assistant.volume.pyautogui.press', placeholder_press):
+            assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt win'
 
 
 def test_lin_up() -> None:
