@@ -8,11 +8,11 @@ from assistant.timedate import timedate
 from assistant.volume import volume
 
 
-def timer_reminder() -> str:
+def timer_reminder(fake: str) -> str:
     """Uebergang.
 
     Args:
-        none
+        fake: str Useless
 
     Returns:
         str: Voiceoutput for user as a string
@@ -21,14 +21,15 @@ def timer_reminder() -> str:
         none
 
     """
+    fake += fake
     return 'time-reminder'
 
 
-def weatherreport() -> str:
+def weatherreport(fake: str) -> str:
     """Uebergang.
 
     Args:
-        none
+        fake: str Useless
 
     Returns:
         str: Voiceoutput for user as a string
@@ -37,6 +38,7 @@ def weatherreport() -> str:
         none
 
     """
+    fake += fake
     return 'weatherreport'
 
 
@@ -58,10 +60,10 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
 
     """
     keyword_to_function = {
-        ('Uhrzeit', 'Uhr', 'Datum', 'spaet', 'Tag'): timedate(voiceinput),
-        ('Lautstaerke', 'leiser', 'lauter'): volume(voiceinput),
-        ('Timer', 'Erinnerung'): timer_reminder(),
-        ('Wetter', 'Vorhersage'): weatherreport(),
+        ('Uhrzeit', 'Uhr', 'Datum', 'spaet', 'Tag'): timedate,
+        ('Lautstaerke', 'leiser', 'lauter'): volume,
+        ('Timer', 'Erinnerung'): timer_reminder,
+        ('Wetter', 'Vorhersage'): weatherreport,
     }
 
     if qualifier == 2:
@@ -70,14 +72,14 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
         assert len(
             list(keyword_to_function.values()),
         ) >= function_number + 1, 'Invaild last function call'
-        return list(keyword_to_function.values())[function_number]
+        return list(keyword_to_function.values())[function_number](voiceinput)
 
     function_number = 0  # Without qualifiers == 2 fucntion_number has to be 0
     word_by_word = voiceinput.split()  # list of all words in the voiceinput
 
     for keywords_list, function in keyword_to_function.items():
         for keyword in keywords_list:
-            if difflib.get_close_matches(keyword, word_by_word, 1, 0.8) != []:
-                return function
+            if difflib.get_close_matches(keyword, word_by_word, 1, 0.7):
+                return function(voiceinput)
 
     return 'Leider kann ich mit diesem Befehl nichts anfangen'
