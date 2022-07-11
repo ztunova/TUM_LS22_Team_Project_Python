@@ -33,40 +33,40 @@ if platform.system() == 'Windows':
         """Test Volume up for Windows."""
         with patch('platform.system', return_value='Windows'), \
              patch('assistant.volume.pyautogui.press', placeholder_press):
-            assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht win'
+            assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
 
     def test_win_down() -> None:
         """Test Volume down for Windows."""
         with patch('platform.system', return_value='Windows'), \
              patch('assistant.volume.pyautogui.press', placeholder_press):
-            assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert win'
+            assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
 
     def test_win_mute() -> None:
         """Test Volume mute for Windows."""
         with patch('platform.system', return_value='Windows'), \
              patch('assistant.volume.pyautogui.press', placeholder_press):
-            assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt win'
+            assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
 
 
 def test_lin_up() -> None:
     """Test Volume up for Linux."""
     with patch('platform.system', return_value='Linux'), \
          patch('assistant.volume.os.system', placeholder_press):
-        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht lin'
+        assert volume('Mach lauter') == f'Lautstärke wurde um {STEP}% erhöht'
 
 
 def test_lin_down() -> None:
     """Test Volume down for Linux."""
     with patch('platform.system', return_value='Linux'), \
          patch('assistant.volume.os.system', placeholder_press):
-        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert lin'
+        assert volume('Mach leiser') == f'Lautstärke wurde um {STEP}% verringert'
 
 
 def test_lin_mute() -> None:
     """Test Volume mute for Linux."""
     with patch('platform.system', return_value='Linux'), \
          patch('assistant.volume.os.system', placeholder_press):
-        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt lin'
+        assert volume('Mach stumm') == 'Stummschaltung wurde gedrückt'
 
 
 def test_jav_up() -> None:
