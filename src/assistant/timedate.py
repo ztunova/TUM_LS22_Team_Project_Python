@@ -17,16 +17,16 @@ def timedate(taskinput: str) -> str:
 
     """
     keyword_to_function = {
-        ('Uhrzeit', 'Uhr', 'spaet'): time(),
-        ('Datum', 'Tag'): date(),
+        ('uhrzeit', 'uhr', 'spaet'): time,
+        ('datum', 'tag'): date,
     }
 
     word_by_word = taskinput.split()
 
     for keywords_list, function in keyword_to_function.items():
         for keyword in keywords_list:
-            if difflib.get_close_matches(keyword, word_by_word, 1, 0.8) != []:
-                return function
+            if difflib.get_close_matches(keyword, word_by_word, 1, 0.7) != []:
+                return function()
 
     return 'Leider kann ich mit diesem Befehl nichts anfangen'
 

@@ -14,13 +14,13 @@ traveller.start()
 
 def test_time() -> None:
     """Test time function return current time."""
-    assert timedate('Wie viel Uhr ist es') == \
+    assert timedate('wie viel uhr ist es') == \
         f'Es ist {dt.datetime.now().strftime("%H:%M")}'
 
 
 def test_date() -> None:
     """Test date function return current date."""
-    assert timedate('Welcher Tag ist heute') == \
+    assert timedate('welcher tag ist heute') == \
         f'Es ist der {dt.datetime.now().strftime("%d/%m/%Y")}'
 
 

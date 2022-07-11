@@ -34,7 +34,7 @@ def test_keyword_none() -> None:
 def test_keyword_timedate() -> None:
     """Test Timedate Call."""
     with patch('assistant.keyword_find.timedate', placeholder):
-        assert keyword_find('Uhr', 1, 0) == 'Uhr'
+        assert keyword_find('ur', 1, 0) == 'ur'
 
 
 def test_keyword_volume() -> None:
@@ -45,12 +45,12 @@ def test_keyword_volume() -> None:
 
 def test_keyword_timer() -> None:
     """Test Timer Call."""
-    assert keyword_find('Timer fuer 10 Minuten', 1, 0) == 'time-reminder'
+    assert keyword_find('timer fuer 10 minuten', 1, 0) == 'time-reminder'
 
 
 def test_keyword_weatherreport() -> None:
     """Test Weatherreport Call."""
-    assert keyword_find('Wie wird das Wetter morgen', 1, 0) == 'weatherreport'
+    assert keyword_find('wie wird das wetter morgen', 1, 0) == 'weatherreport'
 
 
 # Test actuall function call to be correct (copy paste test from Plug-In functions)
@@ -65,7 +65,7 @@ def test_full_call_keyword_volume() -> None:
 
 def test_full_call_keyword_timedate() -> None:
     """Test Date Output."""
-    assert keyword_find('Welcher Tag ist heute', 1, 0) == \
+    assert keyword_find('welcher tag ist heute', 1, 0) == \
         f'Es ist der {dt.datetime.now().strftime("%d/%m/%Y")}'
 
 
@@ -74,13 +74,13 @@ def test_full_call_keyword_timedate() -> None:
 
 def test_keyword_qualifiers() -> None:
     """Test if last function called is executed correctly."""
-    assert keyword_find('Welcher Tag ist heute', 2, 0) == \
+    assert keyword_find('welcher tag ist heute', 2, 0) == \
         f'Es ist der {dt.datetime.now().strftime("%d/%m/%Y")}'
     with patch('platform.system', return_value='Linux'), \
          patch('assistant.volume.os.system', placeholder_press):
         assert keyword_find('Mach lauter', 2, 1) == f'Lautstärke wurde um {STEP}% erhöht'
-    assert keyword_find('Setzte den Timer fuer 10 Minuten', 2, 2) == 'time-reminder'
-    assert keyword_find('Wie wird das Wetter morgen', 2, 3) == 'weatherreport'
+    assert keyword_find('setzte den timer fuer 10 Minuten', 2, 2) == 'time-reminder'
+    assert keyword_find('wie wird das wetter morgen', 2, 3) == 'weatherreport'
     # assert keyword_find('Unbekannte Funktion', 2, 4) == 'Invaild last function call'
 
 
@@ -90,9 +90,9 @@ def test_keyword_qualifiers() -> None:
 def test_keyword_with_errors() -> None:
     """Test if keywords with spellimng mistakes are sitll recognised."""
     with patch('assistant.keyword_find.timedate', placeholder):
-        assert keyword_find('Ur', 1, 0) == 'Ur'
-        assert keyword_find('Urzet', 1, 0) == 'Urzet'
-        assert keyword_find('Datu', 1, 0) == 'Datu'
+        assert keyword_find('ur', 1, 0) == 'ur'
+        assert keyword_find('urzet', 1, 0) == 'urzet'
+        assert keyword_find('datu', 1, 0) == 'datu'
         assert keyword_find('spet', 1, 0) == 'spet'
 
     with patch('assistant.keyword_find.volume', placeholder):
