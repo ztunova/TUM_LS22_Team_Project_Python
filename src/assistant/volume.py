@@ -56,13 +56,13 @@ def quieter() -> str:
     """Decrease Volume."""
     if platform.system() == 'Windows':
         pyautogui.press('volumedown', presses=int((STEP / 2)))
-        return f'Lautstärke wurde um {STEP}% verringert win'
         # Pyautogui kann die lautsärke nur in 2% Schritten ändern
+        return f'Lautstärke wurde um {STEP}% verringert win'
 
     if platform.system() == 'Linux':
         os.system(f'pactl set-sink-volume @DEFAULT_SINK@ -{STEP}%')
         return f'Lautstärke wurde um {STEP}% verringert lin'
-        # Pyautogui kann die lautsärke nur in 2% Schritten ändern
+
     return 'Es ist ein Fehler aufgetreten'
 
 
