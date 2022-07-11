@@ -64,7 +64,7 @@ def keyword_find(voiceinput: str, qualifier: int, function_number: int) -> str:
         ('lautstaerke', 'leiser', 'lauter'): volume,
         ('timer', 'erinnerung'): timer_reminder,
         ('wetter', 'vorhersage'): weatherreport,
-    }
+    }  # Each list must have at least two elements
 
     if qualifier == 2:
         print(list(keyword_to_function.values()))

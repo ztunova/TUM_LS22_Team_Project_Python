@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Volume Function."""
 
-# import difflib
+import difflib
 import os
 import platform
 
@@ -24,51 +24,53 @@ def volume(taskinput: str) -> str:
     """
     taskinput = taskinput.lower()
 
-    if 'stumm' in taskinput:
-        return mute()
+    keyword_to_function = {
+        ('stumm', 'null', 'mute'): mute,
+        ('lauter', 'erhö'): louder,
+        ('leiser', 'senke'): quieter,
+    }
 
-    if 'null' in taskinput:
-        return mute()
+    word_by_word = taskinput.split()  # list of all words in the voiceinput
 
-    if 'leiser' in taskinput:
-        return quieter()
-
-    if 'lauter' in taskinput:
-        return louder()
+    for keywords_list, function in keyword_to_function.items():
+        for keyword in keywords_list:
+            if difflib.get_close_matches(keyword, word_by_word, 1, 0.7) != []:
+                return function(STEP)
 
     return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-def louder() -> str:
+def louder(step: int) -> str:
     """Increase Volume."""
     if platform.system() == 'Windows':
-        pyautogui.press('volumeup', presses=int((STEP / 2)))
+        pyautogui.press('volumeup', presses=int((step / 2)))
         # Pyautogui kann die lautsärke nur in 2% Schritten ändern
-        return f'Lautstärke wurde um {STEP}% erhöht'
+        return f'Lautstärke wurde um {step}% erhöht'
 
     if platform.system() == 'Linux':
-        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ +{STEP}%')
-        return f'Lautstärke wurde um {STEP}% erhöht'
+        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ +{step}%')
+        return f'Lautstärke wurde um {step}% erhöht'
 
-    return 'Es ist ein Fehler aufgetreten'
+    return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-def quieter() -> str:
+def quieter(step: int) -> str:
     """Decrease Volume."""
     if platform.system() == 'Windows':
-        pyautogui.press('volumedown', presses=int((STEP / 2)))
+        pyautogui.press('volumedown', presses=int((step / 2)))
         # Pyautogui kann die lautsärke nur in 2% Schritten ändern
-        return f'Lautstärke wurde um {STEP}% verringert'
+        return f'Lautstärke wurde um {step}% verringert'
 
     if platform.system() == 'Linux':
-        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ -{STEP}%')
-        return f'Lautstärke wurde um {STEP}% verringert'
+        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ -{step}%')
+        return f'Lautstärke wurde um {step}% verringert'
 
-    return 'Es ist ein Fehler aufgetreten'
+    return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-def mute() -> str:
+def mute(step: int) -> str:
     """Mute Volume."""
+    step += step
     if platform.system() == 'Windows':
         pyautogui.press('volumemute', presses=1)
         return 'Stummschaltung wurde gedrückt'
@@ -77,4 +79,4 @@ def mute() -> str:
         os.system('pactl set-sink-mute @DEFAULT_SINK@ toggle')
         return 'Stummschaltung wurde gedrückt'
 
-    return 'Es ist ein Fehler aufgetreten'
+    return 'Leider kann ich mit diesem Befehl nichts anfangen'

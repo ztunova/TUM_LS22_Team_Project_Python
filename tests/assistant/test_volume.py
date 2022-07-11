@@ -72,16 +72,16 @@ def test_lin_mute() -> None:
 def test_jav_up() -> None:
     """Test Volume up for unupported OS."""
     with patch('platform.system', return_value='Java'):
-        assert volume('Mach lauter') == 'Es ist ein Fehler aufgetreten'
+        assert volume('Mach lauter') == 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
 def test_jav_down() -> None:
     """Test Volume up for unupported OS."""
     with patch('platform.system', return_value='Java'):
-        assert volume('Mach leiser') == 'Es ist ein Fehler aufgetreten'
+        assert volume('Mach leiser') == 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
 def test_jav_mute() -> None:
     """Test Volume up for unupported OS."""
     with patch('platform.system', return_value='Java'):
-        assert volume('Mach stumm') == 'Es ist ein Fehler aufgetreten'
+        assert volume('Mach stumm') == 'Leider kann ich mit diesem Befehl nichts anfangen'
