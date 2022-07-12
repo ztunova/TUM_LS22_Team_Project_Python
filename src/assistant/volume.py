@@ -35,42 +35,41 @@ def volume(taskinput: str) -> str:
     for keywords_list, function in keyword_to_function.items():
         for keyword in keywords_list:
             if difflib.get_close_matches(keyword, word_by_word, 1, 0.7) != []:
-                return function(STEP)
+                return function()
 
     return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-def louder(step: int) -> str:
+def louder() -> str:
     """Increase Volume."""
     if platform.system() == 'Windows':
-        pyautogui.press('volumeup', presses=int((step / 2)))
+        pyautogui.press('volumeup', presses=int((STEP / 2)))
         # Pyautogui kann die lautsärke nur in 2% Schritten ändern
-        return f'Lautstärke wurde um {step}% erhöht'
+        return f'Lautstärke wurde um {STEP}% erhöht'
 
     if platform.system() == 'Linux':
-        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ +{step}%')
-        return f'Lautstärke wurde um {step}% erhöht'
+        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ +{STEP}%')
+        return f'Lautstärke wurde um {STEP}% erhöht'
 
     return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-def quieter(step: int) -> str:
+def quieter() -> str:
     """Decrease Volume."""
     if platform.system() == 'Windows':
-        pyautogui.press('volumedown', presses=int((step / 2)))
+        pyautogui.press('volumedown', presses=int((STEP / 2)))
         # Pyautogui kann die lautsärke nur in 2% Schritten ändern
-        return f'Lautstärke wurde um {step}% verringert'
+        return f'Lautstärke wurde um {STEP}% verringert'
 
     if platform.system() == 'Linux':
-        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ -{step}%')
-        return f'Lautstärke wurde um {step}% verringert'
+        os.system(f'pactl set-sink-volume @DEFAULT_SINK@ -{STEP}%')
+        return f'Lautstärke wurde um {STEP}% verringert'
 
     return 'Leider kann ich mit diesem Befehl nichts anfangen'
 
 
-def mute(step: int) -> str:
+def mute() -> str:
     """Mute Volume."""
-    step += step
     if platform.system() == 'Windows':
         pyautogui.press('volumemute', presses=1)
         return 'Stummschaltung wurde gedrückt'
