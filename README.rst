@@ -27,6 +27,8 @@ Clone the repository and setup your local checkout:
    python -m venv venv
    . venv/bin/activate
    
+   pip install pipwin
+   pipwin install pyaudio
    pip install -r requirements-dev.txt
    pip install -e .
 
