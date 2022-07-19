@@ -53,7 +53,8 @@ module = [
     "pyttsx3",
     "stt",
     "pyaudio",
-    "pyautogui"
+    "pyautogui",
+    "requests"
 ]
 ignore_missing_imports = true
 
