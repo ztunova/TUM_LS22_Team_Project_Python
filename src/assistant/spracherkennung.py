@@ -1,6 +1,7 @@
 """Create audio file from microphone input and convert it to the text."""
 
 import difflib
+import importlib.resources
 import wave
 
 import numpy as np
@@ -10,7 +11,6 @@ from stt import Model
 from assistant.keyword_find import keyword_find
 from assistant.sprachausgabe import TtsEngine
 
-MODEL_PATH = 'src/models/model.tflite'
 RECORDING_PATH = 'Spracheingabe.wav'
 
 
@@ -72,10 +72,11 @@ def convert() -> str:
         str: Text transcript of the given audio file
 
     """
-    language_model = Model(MODEL_PATH)
-    fin = wave.open(RECORDING_PATH, 'rb')
-    audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
-    return str(language_model.stt(audio))  # model.stt returns Any
+    with importlib.resources.path('assistant.data', 'model.tflite') as modelpath:
+        language_model = Model(str(modelpath))
+        fin = wave.open(RECORDING_PATH, 'rb')
+        audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
+        return str(language_model.stt(audio))  # model.stt returns Any
 
 
 def activate_assistant() -> None:
