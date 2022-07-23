@@ -65,8 +65,11 @@ def create_audio(seconds: int) -> str:
     return file_name
 
 
-def convert() -> str:
+def convert(audio_file: str = RECORDING_PATH) -> str:
     """Convert audio file to text transcript.
+
+    Args:
+        audio_file: default audio file, may be overwritten
 
     Returns:
         str: Text transcript of the given audio file
@@ -74,12 +77,12 @@ def convert() -> str:
     """
     with importlib.resources.path('assistant.data', 'model.tflite') as modelpath:
         language_model = Model(str(modelpath))
-        fin = wave.open(RECORDING_PATH, 'rb')
+        fin = wave.open(audio_file, 'rb')
         audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
         return str(language_model.stt(audio))  # model.stt returns Any
 
 
-def activate_assistant() -> None:
+def activate_assistant() -> int:
     """Activate assistant on recognized keyword."""
     tts_engine = TtsEngine()
     activated = 0
@@ -89,20 +92,19 @@ def activate_assistant() -> None:
         create_audio(5)
         text = convert()
         word_by_word = text.split()
-        print(text)
         if text != '':
             if no_input != 0:
                 no_input = 0
             if difflib.get_close_matches('ausschalten', word_by_word, 1, 0.7) != []:
                 tts_engine.speak('assistant ausgeschaltet')
-                break
+                return activated
             if activated:
                 result = keyword_find(text, 1, 1)
                 tts_engine.speak(result)
         else:
             if no_input == 3:
                 tts_engine.speak('assistant ausgeschaltet')
-                break
+                return activated
             no_input = no_input + 1
             print('remaining attempts: ', attempts - no_input)
         # check for keyword for activation
