@@ -12,7 +12,6 @@ from assistant.keyword_find import keyword_find
 from assistant.sprachausgabe import TtsEngine
 
 RECORDING_PATH = 'Spracheingabe.wav'
-PREDEFINED_AUDIO_PATH = 'audio_test/Start.wav'
 
 
 def create_audio(seconds: int) -> str:
@@ -83,18 +82,15 @@ def convert(audio_file: str = RECORDING_PATH) -> str:
         return str(language_model.stt(audio))  # model.stt returns Any
 
 
-def activate_assistant(use_predefined_audio: bool = False) -> int:
+def activate_assistant() -> int:
     """Activate assistant on recognized keyword."""
     tts_engine = TtsEngine()
     activated = 0
     no_input = 0
     attempts = 3
     while True:
-        if use_predefined_audio:
-            text = convert(PREDEFINED_AUDIO_PATH)
-        else:
-            create_audio(5)
-            text = convert()
+        create_audio(5)
+        text = convert()
         word_by_word = text.split()
         if text != '':
             if no_input != 0:

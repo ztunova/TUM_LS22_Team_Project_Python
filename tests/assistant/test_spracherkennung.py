@@ -18,6 +18,12 @@ def placeholder_no_input(audio_file: str = 'Spracheingabe.wav') -> str:
     return ''
 
 
+def placeholder_create_audio(fake_sec: int) -> str:
+    """Fake placeholder function for patching create audio function."""
+    print(fake_sec)
+    return 'audio_test/Start.wav'
+
+
 def test_keyword_recognition() -> None:
     """Test recognition of keywords."""
     text = str(convert('audio_test/Start.wav'))
@@ -30,23 +36,27 @@ def test_keyword_recognition() -> None:
 
 def test_ausschalten_keyword() -> None:
     """Test turn off the assistant after ausschalten keyword."""
-    with patch('assistant.spracherkennung.convert', placeholder_ausschalten):
-        assert activate_assistant(True) == 0
+    with patch('assistant.spracherkennung.convert', placeholder_ausschalten), \
+         patch('assistant.spracherkennung.create_audio', placeholder_create_audio):
+        assert activate_assistant() == 0
 
 
 def test_ausschalten_no_input() -> None:
     """Test turn off the assistant after 3-times no input."""
-    with patch('assistant.spracherkennung.convert', placeholder_no_input):
-        assert activate_assistant(True) == 0
+    with patch('assistant.spracherkennung.convert', placeholder_no_input), \
+         patch('assistant.spracherkennung.create_audio', placeholder_create_audio):
+        assert activate_assistant() == 0
 
 
 def test_activate_no_keyword() -> None:
     """Test to activate assistant with keyword, but not calling keyword_find."""
-    with patch('assistant.spracherkennung.convert', side_effect=['start', '', 'ausschalten']):
-        assert activate_assistant(True) == 1
+    with patch('assistant.spracherkennung.convert', side_effect=['start', '', 'ausschalten']), \
+         patch('assistant.spracherkennung.create_audio', placeholder_create_audio):
+        assert activate_assistant() == 1
 
 
 def test_activate_with_keyword() -> None:
     """Test to activate assistant with keyword, with calling keyword_find."""
-    with patch('assistant.spracherkennung.convert', side_effect=['start', 'uhr', 'ausschalten']):
-        assert activate_assistant(True) == 1
+    with patch('assistant.spracherkennung.convert', side_effect=['start', 'uhr', 'ausschalten']), \
+         patch('assistant.spracherkennung.create_audio', placeholder_create_audio):
+        assert activate_assistant() == 1
