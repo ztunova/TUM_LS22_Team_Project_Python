@@ -115,6 +115,3 @@ def activate_assistant(use_predefined_audio: bool = False) -> int:
         if difflib.get_close_matches('start', word_by_word, 1, 0.7) != []:
             tts_engine.speak('assistant eingeschaltet')
             activated = 1
-
-
-activate_assistant()
