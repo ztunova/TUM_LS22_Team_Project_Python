@@ -1,17 +1,8 @@
-.. image:: ../../../badges/master/pipeline.svg
-   :target: ../../../-/commits/master
-   :alt: pipeline status
-
-.. image:: ../../../badges/master/coverage.svg
-   :target: ../../../-/commits/master
-   :alt: coverage report
-
-
 ============
 Team Project
 ============
 
-A Python Team Project.
+A Python Team Project for Praktikum Python at Technical University of Munich.
 
 
 Getting started
